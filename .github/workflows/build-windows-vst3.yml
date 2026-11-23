@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout plugin
         uses: actions/checkout@v4
-        with:
-          path: plugin
 
       - name: Checkout JUCE
         uses: actions/checkout@v4
@@ -23,14 +21,14 @@ jobs:
           path: JUCE
 
       - name: Configure x64 VST3
-        run: cmake -S plugin -B plugin/build -DJUCE_DIR="${{ github.workspace }}\JUCE" -A x64
+        run: cmake -S . -B build -DJUCE_DIR="${{ github.workspace }}\JUCE" -A x64
 
       - name: Build Release
-        run: cmake --build plugin/build --config Release --target BudotsPHSynth_VST3
+        run: cmake --build build --config Release --target BudotsPHSynth_VST3
 
       - name: Upload VST3 artifact
         uses: actions/upload-artifact@v4
         with:
           name: Budots-PH-Synth-Windows-x64-VST3
-          path: plugin/build/BudotsPHSynth_artefacts/Release/VST3/
+          path: build/BudotsPHSynth_artefacts/Release/VST3/
           if-no-files-found: error
